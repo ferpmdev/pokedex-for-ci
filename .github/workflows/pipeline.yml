@@ -1,4 +1,4 @@
-name: Say hello2
+name: my pipeline
 
 on:
   push:
@@ -6,12 +6,17 @@ on:
       - main
 
 jobs:
-  hello_world:
+  deploy:
     runs-on: ubuntu-22.04
     steps:
-      - name: Echo the message
-        run: |
-          echo "Hola midu!"
-      - name: Dime la fecha
-        run: date
-      - run: ls -l
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run eslint
+        
